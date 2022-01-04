@@ -1,5 +1,5 @@
 # Island-Ads
-Island-Ads is an open source bot that will make ads (changeable by config.js) on rolimons.com. Island Ads was made for fun and personal use Node.js. The bot doesn't require you to install or run it on your pc 24/7 as it can be easily forked onto repl. 
+Island-Ads is an open source bot that will make ads (changeable by config.js) on rolimons.com. Island Ads was made for fun and personal use in Node.js. The bot doesn't require you to install or run it on your pc 24/7 as it can be easily forked onto repl. 
 
 # Installation
 ```
