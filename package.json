@@ -1,0 +1,23 @@
+{
+  "name": "Island Ads",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@replit/database": "^2.0.0",
+    "axios": "^0.24.0",
+    "body-parser": "^1.19.0",
+    "discord-webhook-node": "^1.1.8",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.6",
+    "request": "^2.88.2",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {},
+  "description": ""
+}
