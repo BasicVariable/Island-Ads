@@ -1,10 +1,10 @@
 # Island-Ads
-Island-Ads is an open source bot that will make ads (changeable by config.js) on rolimons.com. Island Ads was made for fun and personal use in Node.js. The bot doesn't require you to install or run it on your pc 24/7 as it can be easily forked onto repl. 
+Island-Ads is an open-source bot that will make ads (customizable by config.js) on rolimons.com. Island Ads was made for fun and personal use in Node.js. The bot doesn't require you to install or run it on your pc 24/7 as it can be easily forked onto repl. The bot allows you to somewhat consistently advertise your offer which increases the chance you get a good inbound trade or the offer you requested as more people will have the chance to view your offer.
 
 # Installation
 ```
 A => Create a repl account and fork the repository
-1. create a repl.it account
+1. Create a repl.it account
 2. Go to home (https://replit.com/~)
 3. Press the plus button under the Create section
 4. Click import from github and paste this link in "https://github.com/BasicVariable/Island-Ads.git"
@@ -66,12 +66,14 @@ E => Acknowledge the following
 # webhook_url; the discord webhook url the bot will use to notify you of attempted Ads
 
 # webhook_color; the (hexcode) color of the embedded webhook url
+
+# CAPR; Not in the config but, on the webhook so I'd like to explain it. CAPR = Completed ads per run, it shows the amount of times the bot requested to post an add, this can be reset when the repl stops or pauses due to inactivity so don't expect it to go that high.
 ```
 # Author
 * [**Basic#2142**](https://www.roblox.com/users/643454786/profile) - Owner/Developer
 
 # How to help
-Want to keep the project going? DM Basic#2142 on discord with bug reports, improvements to code, or just words of encourgement. 
+Want to keep the project going? DM Basic#2142 on discord with bug reports, improvements to code, suggestions, or just words of encourgement. 
 
 Wanna do even more? Donate to one of my crypto wallets listed below!
 ```
