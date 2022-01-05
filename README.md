@@ -73,7 +73,7 @@ E => Acknowledge the following
 * [**Basic#2142**](https://www.roblox.com/users/643454786/profile) - Owner/Developer
 
 # How to help
-Want to keep the project going? DM Basic#2142 on discord with bug reports, improvements to code, suggestions, or just words of encourgement. 
+Want to keep the project going? Join our discord (https://discord.gg/z2zn3VHAV7) and share bug reports, improvements to code, suggestions, or just words of encourgement. 
 
 Wanna do even more? Donate to one of my crypto wallets listed below!
 ```
