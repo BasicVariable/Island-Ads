@@ -17,12 +17,13 @@ B => input your Rolimons cookie and discord webhook
 3. Login to Rolimons (if you aren't already) and inspect the web page
 4. Go to the network tab and refresh the page 
 5. Click the first request called "tradeadcreate" and scroll down to the request headers section
-6. Find/copy the cookie and paste it in the value textbox (on the repl page) then press the Add new secret button
-7. After that type "webhook_url" in the key textbox
-8. Make a new discord server and go to server settings 
-9. Go to the integrations section and click the webhooks tab
-10. Create a new webhook, copy the url, and paste the url in the value textbox (on the repl page)
-11. Press the Add new secret button
+6. Find cookie section of the header then copy the "_RoliVerification" token until the "_RoliData" token starts 
+7. Paste the token (including the "_RoliVerification" section of it) in the value textbox (on the repl page) then press the add new secret button
+8. After that type "webhook_url" in the key textbox
+9. Make a new discord server and go to server settings 
+10. Go to the integrations section and click the webhooks tab
+11. Create a new webhook, copy the url, and paste the url in the value textbox (on the repl page)
+12. Press the Add new secret button
 
 C => Edit the config
 1. Click the files button (icon of a page with a bent corner)
