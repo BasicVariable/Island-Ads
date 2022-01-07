@@ -13,6 +13,7 @@ var opened_req = false
 var player_name = ""
 var r_values
 var p_inv
+var outbounds
 
 // getting player name
 fetch("https://users.roblox.com/v1/users/"+config.UserID)
@@ -34,27 +35,31 @@ var get_inv = async function(){
 };
 
 // webhook tings
-var send_wr = async function(success, items){
+var send_wr = async function(success, o_items, r_items, r_tags){
   loops = loops+1
   var items_n = ""
   var fixtags = ""
   var fixreq = ""
   var total_offerv = 0
   var total_request = 0
-  
-  console.log(items)
-  for (let i=0; i < items.length; i++) {
-    total_offerv=total_offerv+r_values.items[items[i]][4]
-    items_n = items_n + `
-    ` + r_values.items[items[i]][0]
+  var success_emoji
+
+  if (success.toString()=="true"){
+    success_emoji="🟩"
+  }else if (success.toString()=="false"){
+    success_emoji="🟥"
+  }
+
+  for (let i=0; i < o_items.length; i++) {
+    total_offerv=total_offerv+r_values.items[o_items[i]][4]
+    items_n = items_n + `\n` + r_values.items[o_items[i]][0]
   };
-  for (let i=0; i < config.RoliAd.r_tags.length; i++) {
-    fixtags = fixtags + " :" + config.RoliAd.r_tags[i] + ":"
+  for (let i=0; i < r_tags.length; i++) {
+    fixtags = fixtags + " :" + r_tags[i] + ":"
   };
-  for (let i=0; i < config.RoliAd.r_items.length; i++) {
-    total_request=total_request+r_values.items[config.RoliAd.r_items[i]][4]
-    fixreq = fixreq + `
-    ` + r_values.items[config.RoliAd.r_items[i]][0]
+  for (let i=0; i < r_items.length; i++) {
+    total_request=total_request+r_values.items[r_items[i]][4]
+    fixreq = fixreq + `\n` + r_values.items[r_items[i]][0]
   };
   var params = {
       username: "Island Ads",
@@ -62,21 +67,16 @@ var send_wr = async function(success, items){
       embeds: [
           {
         "type": "rich",
-        "title": player_name,
-        "description": `***A_Status: `+ success + `***`,
+        "title": player_name+" 👥",
+        "description": `***A_Status: `+ success + `***  `+success_emoji,
         "color": config.Webhook.webhook_color,
         "fields": [
           {
-            "name": player_name + `'s Roli-Ad:`,
-            "value": "***Offering:***" + items_n + ` 
-            (V: `+ total_offerv +`)
-            ***Asking:*** ` + fixreq + ` 
-            (V: `+ total_request + `) 
-            ***Tags:***
-            ` + fixtags
+            "name": "***"+player_name + `'s Roli-Ad  📊:***\n`,
+            "value": "***Offering  📡:***" + items_n + `\n(V: `+ total_offerv +`)\n***Asking  📲:*** ` + fixreq + `\n(V: `+ total_request + `) \n***Tags:***\n` + fixtags
           },
           {
-            "name": `CAPR:`,
+            "name": `CAPR  🔁:`,
             "value": loops.toString()
           }
         ],
@@ -91,7 +91,7 @@ var send_wr = async function(success, items){
         },
         "footer": {
           "icon_url": `https://media.discordapp.net/attachments/616460506231865357/827917363969654784/Island_Logo_2.png`,
-          "text": `By Basic#2142 | Version 1.00`
+          "text": `By Basic#2142 | Version 1.01`
         },
         "url": `https://www.rolimons.com/player/`+config.UserID
       }
@@ -106,9 +106,65 @@ var send_wr = async function(success, items){
   })
 };
 
-//ykiyk
-var post_ad = async function(){
-  if (config.RoliAd.posttop==true){
+// A more neat way of making arguments for the request
+var get_args = async function(){
+  if (config.RoliAd.restate==true){
+    await update_values();
+    await get_inv()
+    var f_inv = new Array();
+    var outbounds;
+    var ci_list = {"offer":[], "request": []};
+
+    // Formats player's inv
+    p_inv.forEach(item => {
+      f_inv["id"+item.assetId]="true";
+    })
+
+    // Gets last 10 outbounds 
+    await fetch('https://trades.roblox.com/v1/trades/outbound?cursor=&limit=10&sortOrder=Desc', {
+      method: "GET",
+      headers: {'Content-Type': 'application/json',"cookie": ".ROBLOSECURITY="+config.rbx_cookie}
+    })
+    .then(res => res.json())
+    .then(json => outbounds=json.data);
+
+    // Gets last invalid outbound
+    for (let i=0; i < outbounds.length; i++) {
+      console.log(outbounds)
+      var trade = outbounds[i]
+      var viewed_t
+      var viewed_i = new Array();
+      console.log("Searching trade with: "+trade.user.name)
+      await fetch('https://trades.roblox.com/v1/trades/'+trade.id, {
+        method: "GET",
+        headers: {'Content-Type': 'application/json',"cookie": ".ROBLOSECURITY="+config.rbx_cookie}
+      })
+      .then(res => res.json())
+      .then(json => viewed_t=json.offers);
+      // Checks if item is still in the player's inv
+      for (let i=0; i < viewed_t[0].userAssets.length; i++) {
+        console.log("Checking: "+viewed_t[0].userAssets[i].assetId)
+        if (f_inv["id"+viewed_t[0].userAssets[i].assetId]=="true"){
+          viewed_i.push(viewed_t[0].userAssets[i].assetId)
+        };
+      };
+      if (viewed_i.length==viewed_t[0].userAssets.length){
+        ci_list.offer=viewed_i;
+        for (let i=0; i < viewed_t[1].userAssets.length; i++) {
+          ci_list.request[i]=viewed_t[1].userAssets[i].assetId
+        };
+        console.log(ci_list);
+        break;
+      };
+    }
+
+    // Checks if any valid trades were found, if not subs them for reg settings
+    if (ci_list.offer.length<1){
+      return {"o_items":config.RoliAd.item_ids, "r_items":config.RoliAd.r_items, "r_tags":config.RoliAd.r_tags};
+    }else{
+      return {"o_items":ci_list.offer, "r_items":ci_list.request, "r_tags":[]}
+    }
+  }else if (config.RoliAd.posttop==true){  
     var t4 = new Array();
     var fake_t4 = new Array();
     await get_inv()
@@ -121,25 +177,25 @@ var post_ad = async function(){
     });
     fake_t4.sort((a,b)=>b-a)
     var c_t4 = new Array();
-    for (let i=0; i < 4; i++) {
+    for (let i=0; i < fake_t4.length; i++) {
       c_t4.push(t4["id"+fake_t4[i]])
     };
-    fetch('https://www.rolimons.com/tradeapi/create',{
-      method:"POST",
-      headers: { 'Content-Type': 'application/json',"cookie": config.Roli_cookie},
-      body: JSON.stringify({"player_id":config.UserID,"offer_item_ids":c_t4,"request_item_ids":config.RoliAd.r_items,"request_tags":config.RoliAd.r_tags}) 
-    }).then(resolve=>resolve.json()).then(idata=>{
-      send_wr(idata.success, c_t4)
-    })
+    return {"o_items":c_t4, "r_items":config.RoliAd.r_items, "r_tags":config.RoliAd.r_tags};
   }else{
-    fetch('https://www.rolimons.com/tradeapi/create',{
-      method:"POST",
-      headers: { 'Content-Type': 'application/json',"cookie": config.Roli_cookie},
-      body: JSON.stringify({"player_id":config.UserID,"offer_item_ids":config.RoliAd.item_ids,"request_item_ids":config.RoliAd.r_items,"request_tags":config.RoliAd.r_tags}) 
-    }).then(resolve=>resolve.json()).then(idata=>{
-      send_wr(idata.success, config.RoliAd.item_ids)
-    })
+    return {"o_items":config.RoliAd.item_ids, "r_items":config.RoliAd.r_items, "r_tags":config.RoliAd.r_tags};
   };
+};
+
+//ykiyk
+var post_ad = async function(){
+  var api_args = await get_args()
+  fetch('https://www.rolimons.com/tradeapi/create',{
+    method:"POST",
+    headers: { 'Content-Type': 'application/json',"cookie": config.Roli_cookie},
+    body: JSON.stringify({"player_id":config.UserID,"offer_item_ids":api_args.o_items,"request_item_ids":api_args.r_items,"request_tags":api_args.r_tags}) 
+  }).then(resolve=>resolve.json()).then(idata=>{
+    send_wr(idata.success, api_args.o_items, api_args.r_items, api_args.r_tags)
+  })
 };
 
 // material gorl loop

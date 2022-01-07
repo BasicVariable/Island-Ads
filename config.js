@@ -1,17 +1,20 @@
+// Documentation was moved to our Github repository, please read all documentaion on the config before editing things
 const config={
-  Roli_cookie: process.env.cookie, // add in secrets tab
-  UserID: 643454786, // Your roblox id
+  Roli_cookie: process.env.cookie, 
+  rbx_cookie: process.env.r_cookie,
+  UserID: 643454786, 
   RoliAd: {
-    item_ids: [19027209], // offered items (use itemids)
-    r_items: [188668491, 151789690], // requested items (use itemids)
-    r_tags: ["rap", "downgrade"], // Rolimons tags ALWAYS lowercase <3
-    rwait_min: 1080000, // recomended to stay at 18 minutes/1080000 milliseconds'
-    rwait_max: 1320000, // recomended to stay at 22 minutes/1320000 milliseconds
-    posttop: true // Offers your top (valued) items (up to 4) when making ads
+    item_ids: [19027209], 
+    r_items: [16986649, 71484026], 
+    r_tags: ["rap", "downgrade"], 
+    rwait_min: 1080000, 
+    rwait_max: 1320000, 
+    posttop: false, 
+    restate: true 
   },
   Webhook: {
-    webhook_url: process.env.webhook_url, // add in secrets tab
-    webhook_color: 0x00b3ff // WebHook color in hex code
+    webhook_url: process.env.webhook_url, 
+    webhook_color: 0x00b3ff 
   },
 };
 module.exports = { config };
