@@ -25,10 +25,18 @@ B => input your Rolimons cookie and discord webhook
 11. Create a new webhook, copy the url, and paste the url in the value textbox (on the repl page)
 12. Press the Add new secret button
 
+B2 => input your Roblox cookie (optional but, breaks restate feature)
+1. Go to the secrets tab (1st step of section B)
+2. Put the word "r_cookie" in the key text box
+3. Install the EditThisCookie extention (https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg?hl=en)
+4. Go to the Roblox homepage and click on the extention's icon (while on the page) then copy the value under the ".ROBLOSECURITY=" section
+5. Return to the repl page and paste your cookie in the value textbox 
+6. Press the add new secret button
+
 C => Edit the config
 1. Click the files button (icon of a page with a bent corner)
 2. Click the config.js file 
-3. Edit values of the config according to the documentaion provided below (Don't change the Roli_cookie and webhook_url values)
+3. Edit values of the config according to the documentaion provided below (Don't change the Roli_cookie, webhook_url, and rbx_cookie values)
 - My config WILL NOT work for you, be sure to edit it with items you have and your own userid
 
 D => Start the bot and use uptimerobot to keep it running
@@ -48,7 +56,9 @@ E => Acknowledge the following
 
 # Config Documentaion
 ```
-# Roli_cookie;	Your Rolimons cookie in a string EX: _RoliVerification=_RoliData=
+# Roli_cookie; Your Rolimons cookie in a string EX: _RoliVerification=_RoliData=
+
+# rbx_cookie; Your Roblox cookie in a string EX: _|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_
 
 # UserID; Your Roblox user id
 
@@ -63,6 +73,8 @@ E => Acknowledge the following
 # rwait_max; the maximum amount of time the bot will wait to attempt to create another add (recommended to stay at above 22minutes/1320000 milliseconds)
 
 # posttop; enabling this (by setting it from false to true) will force the bot to add your top 4 items (sorted by rolimons value) to the offer side of the trade Ad
+
+# restate; enabling this (by setting it from false to true) will restate your last outbound (in which you still have the items for) as a trade Ad (usefull for trade bots)
 
 # webhook_url; the discord webhook url the bot will use to notify you of attempted Ads
 
