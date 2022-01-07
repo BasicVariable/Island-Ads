@@ -182,6 +182,7 @@ var get_args = async function(){
     };
     return {"o_items":c_t4, "r_items":config.RoliAd.r_items, "r_tags":config.RoliAd.r_tags};
   }else{
+    await update_values()
     return {"o_items":config.RoliAd.item_ids, "r_items":config.RoliAd.r_items, "r_tags":config.RoliAd.r_tags};
   };
 };
