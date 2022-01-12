@@ -3,6 +3,21 @@
 // Other thingys 
 // require('dotenv').config();
 
+
+var textart = `
+_  _  _               _  _                                             _                 _                   _                   
+(_)(_)(_)             (_)(_)                                           (_)              _(_)_                (_)                  
+   (_)    _  _  _  _     (_)     _  _  _       _  _  _  _      _  _  _ (_)            _(_) (_)_      _  _  _ (_)   _  _  _  _     
+   (_)  _(_)(_)(_)(_)    (_)    (_)(_)(_) _   (_)(_)(_)(_)_  _(_)(_)(_)(_)          _(_)     (_)_  _(_)(_)(_)(_) _(_)(_)(_)(_)    
+   (_) (_)_  _  _  _     (_)     _  _  _ (_)  (_)        (_)(_)        (_)         (_) _  _  _ (_)(_)        (_)(_)_  _  _  _     
+   (_)   (_)(_)(_)(_)_   (_)   _(_)(_)(_)(_)  (_)        (_)(_)        (_)         (_)(_)(_)(_)(_)(_)        (_)  (_)(_)(_)(_)_   
+ _ (_) _  _  _  _  _(_)_ (_) _(_)_  _  _ (_)_ (_)        (_)(_)_  _  _ (_)         (_)         (_)(_)_  _  _ (_)   _  _  _  _(_)  
+(_)(_)(_)(_)(_)(_)(_) (_)(_)(_) (_)(_)(_)  (_)(_)        (_)  (_)(_)(_)(_)         (_)         (_)  (_)(_)(_)(_)  (_)(_)(_)(_)    
+                                                                                                                                                        
+`
+
+console.log(textart)
+
 const {users, general} =  require('./config.js')
 const fetch=require("node-fetch");  
 const express = require('express');
@@ -25,6 +40,7 @@ var update_values = async function(){
   await fetch("https://www.rolimons.com/itemapi/itemdetails")
   .then(res => res.json())
   .then(json => r_values=json)
+  console.log("> Got newest Roli-values")
 };
 
 var webhook_statement = async function(text, p_config, type){
@@ -71,24 +87,20 @@ var update_presence = async function(p_config){
     method: "POST",
     headers: {'content-type': 'application/json;charset=UTF-8',"cookie": ".ROBLOSECURITY="+p_config.rbx_cookie, "x-csrf-token": dumbtoken},
     body: {"location": "Home"}
-  }).then(res =>res.json()).then(json=>{
-    console.log(json)
   })
   if (pres_update==15){
     p_name = await get_name(p_config);
     webhook_statement("Bot updated rbx presence of "+p_name, p_config, true);
+    console.log("> Successfully updated user presence for the 15th rotation!")
     pres_update=0;
   }else{
     pres_update++;
-    console.log(pres_update);
   };
 };
 
 // thank you for not having me look through all the item catagorys 
 var get_inv = async function(p_config){
   await fetch("https://www.rolimons.com/api/playerassets/"+p_config.UserID)
-  .then(res => res.json())
-  .then(json => console.log("Inv update: "+json.success))
   var p_inv;
   await fetch("https://inventory.roblox.com/v1/users/"+p_config.UserID+"/assets/collectibles?sortOrder=Asc&limit=100")
   .then(res => res.json())
@@ -165,6 +177,7 @@ var send_wr = async function(success, o_items, r_items, r_tags, p_config){
 
 // A more neat way of making arguments for the request
 var get_args = async function(p_config){
+  console.log("> Starting ad creation")
   if (p_config.RoliAd.restate==true){
     var p_inv = await get_inv(p_config)
     var f_inv = new Array();
@@ -206,7 +219,6 @@ var get_args = async function(p_config){
         for (let i=0; i < viewed_t[1].userAssets.length; i++) {
           ci_list.request[i]=viewed_t[1].userAssets[i].assetId
         };
-        console.log(ci_list);
         break;
       };
     }
@@ -223,7 +235,6 @@ var get_args = async function(p_config){
     var p_inv = await get_inv(p_config)
     p_inv.forEach(item => {
       var i_val = r_values.items[item.assetId][4];
-      console.log(i_val + " | AID:" + item.assetId);
       t4["id"+i_val.toString()]=item.assetId;
       fake_t4.push(i_val)
     });
@@ -249,7 +260,10 @@ var post_ad = async function(p_config){
     headers: { 'Content-Type': 'application/json',"cookie": p_config.Roli_cookie},
     body: JSON.stringify({"player_id":p_config.UserID,"offer_item_ids":api_args.o_items,"request_item_ids":api_args.r_items,"request_tags":api_args.r_tags}) 
   }).then(resolve=>resolve.json()).then(idata=>{
-    send_wr(idata.success, api_args.o_items, api_args.r_items, api_args.r_tags, p_config)
+    send_wr(idata.success, api_args.o_items, api_args.r_items, api_args.r_tags, p_config);
+    var message = idata.success ? '> Posted Ad successfully with items: ' + '{O:['+ api_args.o_items + '] | R:[' + api_args.r_items + `] | T:[` + api_args.r_tags + `]}` : '> Failed to post Ad with items: ' + '{O:['+ api_args.o_items + '] | R:[' + api_args.r_items + `] | T:[` + api_args.r_tags + `]}` + `
+    > Please check the validity of your rbx cookie, roli token, and items inputed in your config`
+    console.log(message);
   })
 };
 
@@ -275,5 +289,5 @@ if(general.display_on==true){
 
 // For repl to receive HTTP traffic
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`)
+  console.log(`> App listening at http://localhost:${port}`)
 })
