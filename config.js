@@ -29,7 +29,7 @@ EX:
 users=[
     {
         Settings for first user
-    }
+    },
     {
         Settings for next user
     }
