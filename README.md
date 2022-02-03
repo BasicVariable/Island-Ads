@@ -74,7 +74,7 @@ EX:
 users=[
   {
     Account specifc settings
-  }
+  },
   {
     Account specifc settings
   }
